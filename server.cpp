@@ -60,7 +60,7 @@ int main ()
 	
     while(!stabilize){
          // get temps from single client 
-            if (mq_receive (qd_server, in_buffer, MSG_BUFFER_SIZE, NULL == -1) == -1) {
+            if (mq_receive (qd_server, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
                 cerr << "Server: mq_receive";
                 exit (1);
             }
