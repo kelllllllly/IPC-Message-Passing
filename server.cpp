@@ -62,7 +62,7 @@ int main ()
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
     char client_queue_name[64];
-
+    char message[1024];
 
     while(!stabilize){
          // get temps from single client 
