@@ -43,10 +43,10 @@ int main (int argc, char** argv) // to include cmd line arguments
 	// use the client PID to help differentiate it from other queues with similar names
 	// the queue name must be a null-terminated c-string.
 	// strcpy makes that happen
-    char client_queue_name [64];
+    // char client_queue_name [64];
 //	string  str_client_queue_name = "/client-" + to_string(getpid ()) + "\\0'";
-	string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
-	strcpy(client_queue_name, str_client_queue_name.c_str());
+//  string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
+	// strcpy(client_queue_name, str_client_queue_name.c_str());
     float client_temp = atof(argv[1]); // turns string to float 
 
 	// Build message queue attribute structure passed to the mq open
@@ -60,7 +60,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 	bool up = true; 
 
 	// Create and open client message queue
-    if ((qd_client = mq_open (client_queue_name, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
+    if ((qd_client = mq_open (CLIENT_QUEUE_NAME, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
         cerr<<"Client: mq_open (client)";
         exit (1);
     }
@@ -72,13 +72,14 @@ int main (int argc, char** argv) // to include cmd line arguments
     }
     
     while (up) {
-        sprintf(in_buffer, "%s %.2f", client_queue_name, client_temp); // stores my_temp into in_buffer
+        sprintf(in_buffer, "%.2f", client_temp); // stores my_temp into in_buffer
         // Send message to server
 		//  Data sent is the client's message queue name
         if (mq_send (qd_server, in_buffer , strlen(in_buffer) + 1, 0) == -1) {
              cerr<<"Client: Not able to send message to server";
             continue;
         }
+        printf("client temperature sent: %.2f\n", client_temp)''
         // Receive response from server
         if (mq_receive (qd_client, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
              cerr<<"Client: mq_receive";
@@ -98,7 +99,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 
     // close mq, unlink 
     mq_close(qd_client);
-    mq_unlink(client_queue_name);
+    mq_unlink(CLIENT_QUEUE_NAME);
     printf("Exiting.");
     exit (0);
 }

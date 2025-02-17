@@ -73,8 +73,8 @@ int main ()
                 exit (1);
             }
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
-            // sscanf(in_buffer, "%s %f", client_queue_name, &client_temps[0]); // recieve temp + name
-            client_temp = atof(in_buffer);
+            sscanf(in_buffer, "%s %f", client_queue_name, &client_temp); // recieve temp + name
+            //client_temp = atof(in_buffer);
             printf("Temperature recieved from client: %.2f\n", client_temp);// taking out current array form to test single value 
             printf("Client queue name: %s\n", client_queue_name); // to see what client queue name i recieve 
 
