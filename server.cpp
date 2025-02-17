@@ -32,7 +32,8 @@ that name to reply.
 *****************************************************************************/
 // resources used:
 // https://www.w3schools.com/c/c_strings.php - for string functions 
-// https://www.w3schools.com/c/ref_stdio_sprintf.php 
+// https://www.w3schools.com/c/ref_stdio_sprintf.php
+// https://www.w3schools.com/c/ref_stdio_sscanf.php 
 int main ()
 {
     mqd_t qd_server, qd_client;   // queue descriptors
@@ -76,7 +77,8 @@ int main ()
             client_temps[0] = atof(in_buffer);
             total_client_temps += client_temps[0];
             printf("Temperature recieved from client: %.2f\n", client_temps[0]);
-         
+            printf("Client queue name: %s\n", client_queue_name); // to see what client queue name i recieve 
+
             // calculates the new central temperature then prints. 
             float new_cen_temp = (2 * central_temp + total_client_temps) / 3.0;
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
