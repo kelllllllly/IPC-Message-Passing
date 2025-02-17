@@ -74,7 +74,7 @@ int main ()
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
             // stabalization check
-            stablization = (client_temps[0] == new_cen_temp); 
+            stabilize = (client_temps[0] == new_cen_temp); 
 
             // send the new central temp back to client 
             sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
@@ -96,7 +96,7 @@ int main ()
 
     // client terminates
     sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
-    mqd_t qd_client = mq_open(client_queue_name, O_WRONLY);
+    qd_client = mq_open(client_queue_name, O_WRONLY);
     // open mq, if fails quit!
     if (qd_client != -1) {
         mq_send(qd_client, "quit", 10, 0);
