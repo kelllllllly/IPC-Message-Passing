@@ -80,7 +80,7 @@ int main (int argc, char** argv) // to include cmd line arguments
         sprintf(in_buffer, "%.2f", client_temp); // stores my_temp into in_buffer
         // Send message to server
 		//  Data sent is the client's message queue name
-        if (mq_send (qd_server, in_buffer , strlen(inbuffer), 0) == -1) {
+        if (mq_send (qd_server, in_buffer , strlen(in_buffer), 0) == -1) {
              cerr<<"Client: Not able to send message to server";
             continue;
         }
@@ -100,7 +100,7 @@ int main (int argc, char** argv) // to include cmd line arguments
             break;
         }
         // calculate new cent temp after server calculates new temp 
-        float central_temp = atof(inbuffer); 
+        float central_temp = atof(in_buffer); 
         client_temp = (client_temp * 3 + 3 * central_temp) / 5;
         printf("client %d updated temperature: %.2f\n", getpid(), client_temp); 
     }
