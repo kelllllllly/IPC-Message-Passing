@@ -48,8 +48,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 //  string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
 	// strcpy(client_queue_name, str_client_queue_name.c_str());
     float client_temp = atof(argv[1]); // turns string to float 
-
-	// Build message queue attribute structure passed to the mq open
+    	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
 		attr.mq_flags = 0;
 		attr.mq_maxmsg = MAX_MESSAGES;

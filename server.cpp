@@ -61,6 +61,7 @@ int main ()
     // float total_client_temps = 0.0;  // initalized to 0
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
+    char client_queue_name[64];
 
 
     while(!stabilize){
