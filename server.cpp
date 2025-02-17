@@ -86,9 +86,9 @@ int main ()
             
             // open mq then checks if mq_open was successful 
 //            cout << "attempting to open mq\n";
-            if((qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY))== -1){
-            cerr << "Server: mq_open (client queue) failed \n";
-            exit(1); // might have to fix to continue
+            if((qd_client = mq_open(client_queue_name, O_WRONLY))== -1){
+            cerr << "Server: mq_open" << client_queue_name << "failed \n";
+            continue; // might have to fix to continue
             }
             cout << "Server: Client MQ opened!" << endl;
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
