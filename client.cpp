@@ -24,7 +24,7 @@
 #define MAX_MESSAGES 10
 #define MAX_MSG_SIZE 256
 #define MSG_BUFFER_SIZE MAX_MSG_SIZE + 10   // leave some extra space after message
-#define CLIENT_QUEUE_NAME "/kellyclient"
+//#define CLIENT_QUEUE_NAME "/kellyclient"
 using namespace std;
 // resources used:
 // https://www.w3schools.com/c/c_strings.php - for string functions 
