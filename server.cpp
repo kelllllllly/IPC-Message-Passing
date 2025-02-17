@@ -61,10 +61,7 @@ int main ()
     // float total_client_temps = 0.0;  // initalized to 0
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
-    //char client_queue_name[64];
-	// Initialize the token to be given to client
-	// int token_number = 1; 
-	
+
 
     while(!stabilize){
          // get temps from single client 
@@ -73,12 +70,9 @@ int main ()
                 exit (1);
             }
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
-            //sscanf(in_buffer, "%s %f", client_queue_name, &client_temp); // recieve temp + name
             client_temp = atof(in_buffer);
             printf("Temperature recieved from client: %.2f\n", client_temp);// taking out current array form to test single value 
-            // printf("Client queue name: %s\n", client_queue_name); // to see what client queue name i recieve 
 
-            //total_client_temps += client_temps[0];
             // calculates the new central temperature then prints. 
             float new_cen_temp = (2 * central_temp + client_temp) / 3.0; // changed from total to client temp
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
@@ -86,15 +80,17 @@ int main ()
             // stabalization check
             cout << "attempting to stabilize\n";
             stabilize = (client_temp == central_temp); // changed from client_temps[0] to current var.
-            cout << "succesful\n";
+            cout << "successful\n";
             // send the new central temp back to client 
-            //sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
+            
+            // get client queue name
+            sscanf(in_buffer,"%s %f", client_queue_name, &client_temp);
             // open mq then checks if mq_open was successful 
             cout << "attempting to open mq\n";
-            qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY);
+            qd_client = mq_open(client_queue_name, O_WRONLY);
             if (qd_client == -1) {
                 cerr << "Server: mq_open (client queue)\n";
-                continue; // might have to fix to continue
+                exit(1); // might have to fix to continue
             }
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
             sprintf(in_buffer, "%.2f", new_cen_temp);
@@ -107,8 +103,6 @@ int main ()
     printf("The System is now stablizied. Quitting.\n");
 
     // client terminates
-    //sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
-   // sprintf(client_queue_name, "/kellyclient-%d", getpid());
     qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY);
     // open mq, if fails quit!
     if (qd_client != -1) {
