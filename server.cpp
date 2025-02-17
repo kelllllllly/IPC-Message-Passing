@@ -89,7 +89,7 @@ int main ()
             cout << "attempting to open mq\n";
             qd_client = mq_open(client_queue_name, O_WRONLY);
             if (qd_client == -1) {
-                cerr << "Server: mq_open (client queue)\n";
+                cerr << "Server: mq_open (client queue) failed \n";
                 exit(1); // might have to fix to continue
             }
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq

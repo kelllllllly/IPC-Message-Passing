@@ -79,6 +79,7 @@ int main (int argc, char** argv) // to include cmd line arguments
             continue;
         }
         printf("client temperature sent: %.2f\n", client_temp);
+        
         // Receive response from server
         if (mq_receive (qd_client, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
              cerr<<"Client: mq_receive";
