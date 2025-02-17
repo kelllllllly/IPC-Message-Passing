@@ -77,7 +77,7 @@ int main (int argc, char** argv) // to include cmd line arguments
     
     //printf ("Ask for a token (Press <ENTER>): ");
     while (up) {
-        sprintf(inbuffer, "%.2f", client_temp); // stores my_temp into in_buffer
+        sprintf(in_buffer, "%.2f", client_temp); // stores my_temp into in_buffer
         // Send message to server
 		//  Data sent is the client's message queue name
         if (mq_send (qd_server, inbuffer , strlen(inbuffer), 0) == -1) {
