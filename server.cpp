@@ -59,6 +59,7 @@ int main ()
         cerr << "Server: mq_open (client queue) failed \n";
         exit(1); // might have to fix to continue
     }
+    cout << "Server: Client MQ opened!" << endl;
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
 	float client_temp; // array that holds the client temps (currently a single client) currently changed from array to only hold 1 value
