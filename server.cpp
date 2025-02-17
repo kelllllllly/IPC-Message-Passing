@@ -57,7 +57,11 @@ int main ()
 	// int token_number = 1; 
 	
 	// Open and create the server message queue
-	
+	if ((qd_server = mq_open (SERVER_QUEUE_NAME, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
+        perror ("Server: mq_open (server)");
+        exit (1);
+    }
+    
     while(!stabilize){
          // get temps from single client 
             if (mq_receive (qd_server, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
