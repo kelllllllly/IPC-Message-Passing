@@ -43,10 +43,9 @@ int main (int argc, char** argv) // to include cmd line arguments
 	// use the client PID to help differentiate it from other queues with similar names
 	// the queue name must be a null-terminated c-string.
 	// strcpy makes that happen
-    // char client_queue_name [64];
-//	string  str_client_queue_name = "/client-" + to_string(getpid ()) + "\\0'";
-//  string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
-	// strcpy(client_queue_name, str_client_queue_name.c_str());
+    char client_queue_name [64];
+    string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
+	strcpy(client_queue_name, str_client_queue_name.c_str());
     float client_temp = atof(argv[1]); // turns string to float 
     	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
@@ -57,6 +56,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 
 	char in_buffer [MSG_BUFFER_SIZE];   // Build input buffer
 	bool up = true; 
+
 
 	// Create and open client message queue
     if ((qd_client = mq_open (CLIENT_QUEUE_NAME, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
@@ -98,7 +98,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 
     // close mq, unlink 
     mq_close(qd_client);
-    mq_unlink(CLIENT_QUEUE_NAME);
+    mq_unlink(client_queue_name);
     printf("Exiting.");
     exit (0);
 }
