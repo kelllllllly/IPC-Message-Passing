@@ -14,7 +14,7 @@
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
-
+#include <math.h>
 // DEFINE THE SERVER NAME AN DEFAULT VALUES FOR THE MESSAGE QUEUE
 #define SERVER_QUEUE_NAME   "/kellyserver"
 #define QUEUE_PERMISSIONS 0660  // like chmod values, user and owner can read and write to queue
