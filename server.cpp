@@ -44,7 +44,16 @@ int main ()
 		attr.mq_maxmsg = MAX_MESSAGES;
 		attr.mq_msgsize = MAX_MSG_SIZE;
 		attr.mq_curmsgs = 0;
+	
+    
+        // Open and create the server message queue
+	if ((qd_server = mq_open (SERVER_QUEUE_NAME, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
+        perror ("Server: mq_open (server)");
+        exit (1);
+    }
 
+    cout << "mq opened" << endl; // testing to see if it opens. 
+    
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
     // char out_buffer [MSG_BUFFER_SIZE];
@@ -56,12 +65,7 @@ int main ()
 	// Initialize the token to be given to client
 	// int token_number = 1; 
 	
-	// Open and create the server message queue
-	if ((qd_server = mq_open (SERVER_QUEUE_NAME, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
-        perror ("Server: mq_open (server)");
-        exit (1);
-    }
-    
+
     while(!stabilize){
          // get temps from single client 
             if (mq_receive (qd_server, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {

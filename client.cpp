@@ -72,7 +72,6 @@ int main (int argc, char** argv) // to include cmd line arguments
         exit (1);
     }
 
-
 // Loop while the enter key is pressed after the prompt to:
     
     //printf ("Ask for a token (Press <ENTER>): ");
