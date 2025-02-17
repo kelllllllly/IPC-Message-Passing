@@ -64,11 +64,6 @@ int main ()
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
 
-    if(qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY) == -1){
-        cerr << "Server: mq_open (client queue) failed \n";
-        exit(1); // might have to fix to continue
-    }
-    cout << "Server: Client MQ opened!" << endl;
     while(!stabilize){
          // get temps from single client 
             if (mq_receive (qd_server, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
@@ -92,7 +87,11 @@ int main ()
             
             // open mq then checks if mq_open was successful 
 //            cout << "attempting to open mq\n";
-
+if(qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY) == -1){
+    cerr << "Server: mq_open (client queue) failed \n";
+    exit(1); // might have to fix to continue
+}
+cout << "Server: Client MQ opened!" << endl;
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
             sprintf(in_buffer, "%.2f", new_cen_temp);
             mq_send(qd_client, in_buffer, strlen(in_buffer) + 1, 0);
