@@ -86,14 +86,16 @@ int main ()
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
             // stabalization check
+            cout << "attempting to stabilize";
             stabilize = (client_temps[0] == new_cen_temp); 
-
+            cout << "succesful";
             // send the new central temp back to client 
             sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
             // open mq then checks if mq_open was successful 
+            cout << "attempting to open mq";
             qd_client = mq_open(client_queue_name, O_WRONLY);
             if (qd_client == -1) {
-                cerr << "Server: mq_open (client queue)";
+                cerr << "Server: mq_open (client queue) ";
                 exit(1);
             }
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
