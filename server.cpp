@@ -22,7 +22,7 @@
 #define MAX_MSG_SIZE 256
 #define MSG_BUFFER_SIZE MAX_MSG_SIZE + 10   // leave some extra space after message
 #define CLIENT_COUNT 1 
-#define CLIENT_QUEUE_NAME "/kelly_client"
+//#define CLIENT_QUEUE_NAME "/kelly_client"
 using namespace std;
 /****************************************************************************
 START OF MAIN PROCEDURE
@@ -112,7 +112,7 @@ int main ()
 
     // close server, unlink 
     mq_close(qd_server);
-    mq_unlink(client_queue_name);
+    mq_unlink(SERVER_QUEUE_NAME);
     printf("Exiting.\n");
     exit (0);
 }

@@ -59,7 +59,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 
 
 	// Create and open client message queue
-    if ((qd_client = mq_open (client_queue_name, O_RDONLY | O_CREAT | O_RDWR, QUEUE_PERMISSIONS, &attr)) == -1) {
+    if ((qd_client = mq_open (client_queue_name, O_CREAT | O_RDWR, QUEUE_PERMISSIONS, &attr)) == -1) {
         cerr<<"Client: mq_open (client)";
         exit (1);
     }
