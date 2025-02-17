@@ -93,7 +93,7 @@ int main (int argc, char** argv) // to include cmd line arguments
         float central_temp = atof(in_buffer); 
         client_temp = (client_temp * 3 + 3 * central_temp) / 5;
         // printf("client %d updated temperature: %.2f\n", getpid(), client_temp); removing getpid for testing
-        printf("client %d updated temperature: %.2f\n", client_temp); 
+        printf("client updated temperature: %.2f\n", client_temp); 
     }
 
     // close mq, unlink 
