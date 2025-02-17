@@ -71,9 +71,10 @@ int main ()
                 exit (1);
             }
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
-            client_temp = atof(in_buffer);
+            // get client queue name
+            sscanf(in_buffer,"%s %f", client_queue_name, &client_temp);
             printf("Temperature recieved from client: %.2f\n", client_temp);// taking out current array form to test single value 
-
+            printf("Client queue name: %s\n",client_queue_name);
             // calculates the new central temperature then prints. 
             float new_cen_temp = (2 * central_temp + client_temp) / 3.0; // changed from total to client temp
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
@@ -84,8 +85,6 @@ int main ()
             cout << "successful\n";
             // send the new central temp back to client 
             
-            // get client queue name
-            sscanf(in_buffer,"%s %f", client_queue_name, &client_temp);
             // open mq then checks if mq_open was successful 
             cout << "attempting to open mq\n";
             qd_client = mq_open(client_queue_name, O_WRONLY);
