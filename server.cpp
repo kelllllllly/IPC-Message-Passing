@@ -57,7 +57,7 @@ int main ()
     
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
-	float client_temp // array that holds the client temps (currently a single client) currently changed from array to only hold 1 value
+	float client_temp; // array that holds the client temps (currently a single client) currently changed from array to only hold 1 value
     float total_client_temps = 0.0;  // initalized to 0
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
@@ -75,7 +75,7 @@ int main ()
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
             // sscanf(in_buffer, "%s %f", client_queue_name, &client_temps[0]); // recieve temp + name
             client_temp = atof(in_buffer);
-            rintf("Temperature recieved from client: %.2f\n", client_temp);// taking out current array form to test single value 
+            printf("Temperature recieved from client: %.2f\n", client_temp);// taking out current array form to test single value 
             printf("Client queue name: %s\n", client_queue_name); // to see what client queue name i recieve 
 
             //total_client_temps += client_temps[0];
