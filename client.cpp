@@ -59,11 +59,12 @@ int main (int argc, char** argv) // to include cmd line arguments
 
 
 	// Create and open client message queue
-    if ((qd_client = mq_open (CLIENT_QUEUE_NAME, O_RDONLY | O_CREAT | O_RDWR, QUEUE_PERMISSIONS, &attr)) == -1) {
+    if ((qd_client = mq_open (client_queue_name, O_RDONLY | O_CREAT | O_RDWR, QUEUE_PERMISSIONS, &attr)) == -1) {
         cerr<<"Client: mq_open (client)";
         exit (1);
     }
-	
+	cout << "Client created queue: " << client_queue_name << endl;
+
 	// Open server message queue. The name is shared. It is opend write and read only
     if ((qd_server = mq_open (SERVER_QUEUE_NAME, O_WRONLY)) == -1) {
          cerr<<"Client: mq_open (server)";

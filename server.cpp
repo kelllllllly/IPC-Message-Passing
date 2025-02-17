@@ -87,7 +87,8 @@ int main ()
             // open mq then checks if mq_open was successful 
 //            cout << "attempting to open mq\n";
             if((qd_client = mq_open(client_queue_name, O_WRONLY))== -1){
-            cerr << "Server: mq_open" << client_queue_name << "failed \n";
+                perror("Server: mq_open failed");
+                cerr << "Server: mq_open" << client_queue_name << "failed \n";
             continue; // might have to fix to continue
             }
             cout << "Server: Client MQ opened!" << endl;
