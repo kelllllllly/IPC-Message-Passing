@@ -62,7 +62,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 
 	// Create and open client message queue
     if ((qd_client = mq_open (client_queue_name, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
-        cerr<<"Client: mq_open (client)" ;
+        cerr<<"Client: mq_open (client)";
         exit (1);
     }
 	
@@ -80,7 +80,7 @@ int main (int argc, char** argv) // to include cmd line arguments
         sprintf(in_buffer, "%.2f", client_temp); // stores my_temp into in_buffer
         // Send message to server
 		//  Data sent is the client's message queue name
-        if (mq_send (qd_server, in_buffer , strlen(in_buffer), 0) == -1) {
+        if (mq_send (qd_server, in_buffer , strlen(in_buffer) + 1, 0) == -1) {
              cerr<<"Client: Not able to send message to server";
             continue;
         }
@@ -105,19 +105,9 @@ int main (int argc, char** argv) // to include cmd line arguments
         printf("client %d updated temperature: %.2f\n", getpid(), client_temp); 
     }
 
-    
-	// Close this message queue
-    if (mq_close (qd_client) == -1) {
-        cerr<<"Client: mq_close";
-        exit (1);
-    }
-
-	// Unlink this message queue
-    if (mq_unlink (client_queue_name ) == -1) {
-         cerr<<"Client: mq_unlink";
-        exit (1);
-    }
-    cout << "Client: bye\n";
-
+    // close mq, unlink 
+    mq_close(qd_server);
+    mq_unlink(client_queue_name);
+    printf("Exiting.");
     exit (0);
 }
