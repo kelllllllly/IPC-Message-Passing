@@ -54,7 +54,11 @@ int main ()
     }
 
     cout << "Server: Message Queue Opened!" << endl; // testing to see if it opens. 
-    
+    // moved openeing cllient queue outside of my loop
+   if(qd_client = mq_open(client_queue_name, O_WRONLY) == -1){
+        cerr << "Server: mq_open (client queue) failed \n";
+        exit(1); // might have to fix to continue
+    }
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
 	float client_temp; // array that holds the client temps (currently a single client) currently changed from array to only hold 1 value
@@ -62,7 +66,7 @@ int main ()
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
     char client_queue_name[64];
-    char message[1024];
+
 
     while(!stabilize){
          // get temps from single client 
@@ -79,8 +83,6 @@ int main ()
             float new_cen_temp = (2 * central_temp + client_temp) / 3.0; // changed from total to client temp
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
-            snprintf(message, sizeof(message), "Central Temperature is : %d", central_temp);
-            cout << "sending: " << message << endl;
             // stabalization check
             cout << "attempting to stabilize\n";
             stabilize = (client_temp == central_temp); // changed from client_temps[0] to current var.
@@ -88,12 +90,8 @@ int main ()
             // send the new central temp back to client 
             
             // open mq then checks if mq_open was successful 
-            cout << "attempting to open mq\n";
-            qd_client = mq_open(client_queue_name, O_WRONLY);
-            if (qd_client == -1) {
-                cerr << "Server: mq_open (client queue) failed \n";
-                exit(1); // might have to fix to continue
-            }
+//            cout << "attempting to open mq\n";
+
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
             sprintf(in_buffer, "%.2f", new_cen_temp);
             mq_send(qd_client, in_buffer, strlen(in_buffer) + 1, 0);
