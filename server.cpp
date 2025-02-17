@@ -76,10 +76,11 @@ int main ()
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
             sscanf(in_buffer, "%s %f", client_queue_name, &client_temps[0]); // recieve temp + name
             // client_temps[0] = atof(in_buffer);
-            //total_client_temps += client_temps[0];
+            
             printf("Temperature recieved from client: %.2f\n", client_temps[0]);
             printf("Client queue name: %s\n", client_queue_name); // to see what client queue name i recieve 
 
+            total_client_temps += client_temps[0];
             // calculates the new central temperature then prints. 
             float new_cen_temp = (2 * central_temp + total_client_temps) / 3.0;
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
