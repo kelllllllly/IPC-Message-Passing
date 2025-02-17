@@ -22,7 +22,7 @@
 #define MAX_MSG_SIZE 256
 #define MSG_BUFFER_SIZE MAX_MSG_SIZE + 10   // leave some extra space after message
 #define CLIENT_COUNT 1 
-#define CLIENT_QUEUE_NAMES "/kelly_client"
+// #define CLIENT_QUEUE_NAMES "/kelly_client"
 using namespace std;
 /****************************************************************************
 START OF MAIN PROCEDURE
@@ -57,7 +57,6 @@ int main ()
     
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
-    // char out_buffer [MSG_BUFFER_SIZE];
 	float client_temps[CLIENT_COUNT];  // array that holds the client temps (currently a single client)
     float total_client_temps = 0.0;  // initalized to 0
     float central_temp = 0.0;  // initalized to 0 
@@ -75,8 +74,6 @@ int main ()
             }
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
             sscanf(in_buffer, "%s %f", client_queue_name, &client_temps[0]); // recieve temp + name
-            // client_temps[0] = atof(in_buffer);
-            
             printf("Temperature recieved from client: %.2f\n", client_temps[0]);
             printf("Client queue name: %s\n", client_queue_name); // to see what client queue name i recieve 
 
@@ -90,7 +87,7 @@ int main ()
             stabilize = (client_temps[0] == new_cen_temp); 
             cout << "succesful";
             // send the new central temp back to client 
-            sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
+            //sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
             // open mq then checks if mq_open was successful 
             cout << "attempting to open mq";
             qd_client = mq_open(client_queue_name, O_WRONLY);
@@ -109,7 +106,8 @@ int main ()
     printf("The System is now stablizied. Quitting.");
 
     // client terminates
-    sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
+    //sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
+    sprintf(client_queue_name, "/kellyclient-%d", 0);
     qd_client = mq_open(client_queue_name, O_WRONLY);
     // open mq, if fails quit!
     if (qd_client != -1) {

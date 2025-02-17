@@ -57,7 +57,6 @@ int main (int argc, char** argv) // to include cmd line arguments
 		attr.mq_curmsgs = 0;
 
 	char in_buffer [MSG_BUFFER_SIZE];   // Build input buffer
-	//char temp_buf [10];	                // to hold result of input
 	bool up = true; 
 
 	// Create and open client message queue
@@ -89,10 +88,6 @@ int main (int argc, char** argv) // to include cmd line arguments
              cerr<<"Client: mq_receive";
             exit (1);
         }
-
-        // display token received from server
-        //cout << "Client: Token received from server: " <<  in_buffer << endl;
-        //cout << endl << "Ask for a token (Press ): "<< endl;
         
         if (strcmp(in_buffer, "quit") == 0){ // clients will stop when the temp stabilizes then exits loop. 
             up = false; 
