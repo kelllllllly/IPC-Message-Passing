@@ -87,7 +87,7 @@ int main ()
             
             // open mq then checks if mq_open was successful 
             cout << "attempting to open mq\n";
-            qd_client = mq_open(client_queue_name, O_WRONLY);
+            qd_client = mq_open(in_buffer, O_WRONLY);
             if (qd_client == -1) {
                 cerr << "Server: mq_open (client queue) failed \n";
                 exit(1); // might have to fix to continue
@@ -111,8 +111,8 @@ int main ()
     }
 
     // close server, unlink 
-   // mq_close(qd_server);
-   // mq_unlink(SERVER_QUEUE_NAME);
+    mq_close(qd_server);
+    mq_unlink(SERVER_QUEUE_NAME);
     printf("Exiting.\n");
     exit (0);
 }
