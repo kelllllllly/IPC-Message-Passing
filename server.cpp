@@ -14,6 +14,7 @@
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
+#include <math.h>
 
 // DEFINE THE SERVER NAME AN DEFAULT VALUES FOR THE MESSAGE QUEUE
 #define SERVER_QUEUE_NAME   "/kellyserver"
