@@ -26,17 +26,18 @@
 #define MSG_BUFFER_SIZE MAX_MSG_SIZE + 10   // leave some extra space after message
 
 using namespace std;
-
+// resources used:
+// https://www.w3schools.com/c/c_strings.php - for string functions 
+// https://www.w3schools.com/c/ref_stdio_sprintf.php 
 /****************************************************************************
 START OF MAIN PROCEDURE
 This server creates a message queue and waits for a message requesting a token
 The message received also has the name of the client mailbox.  The server uses
 that name to reply.
 *****************************************************************************/
-int main ()
+int main (int argc, char** argv) // to include cmd line arguments 
 {
     mqd_t qd_server, qd_client;   // queue descriptors
-
 
     // create the client queue for receiving messages from server
 	// use the client PID to help differentiate it from other queues with similar names
@@ -44,20 +45,21 @@ int main ()
 	// strcpy makes that happen
     char client_queue_name [64];
 //	string  str_client_queue_name = "/client-" + to_string(getpid ()) + "\\0'";
-	string  str_client_queue_name = "/kellyclient-" + to_string(getpid ());
+	string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
 	strcpy(client_queue_name, str_client_queue_name.c_str());
-    
+    float client_temp = atof(argv[1]); // turns string to float 
+
 	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
-
 		attr.mq_flags = 0;
 		attr.mq_maxmsg = MAX_MESSAGES;
 		attr.mq_msgsize = MAX_MSG_SIZE;
 		attr.mq_curmsgs = 0;
 
 	char in_buffer [MSG_BUFFER_SIZE];   // Build input buffer
-	char temp_buf [10];	                // to hold result of input
-	
+	//char temp_buf [10];	                // to hold result of input
+	bool up = true; 
+
 	// Create and open client message queue
     if ((qd_client = mq_open (client_queue_name, O_RDONLY | O_CREAT, QUEUE_PERMISSIONS, &attr)) == -1) {
         cerr<<"Client: mq_open (client)" ;
@@ -72,29 +74,38 @@ int main ()
 
 
 // Loop while the enter key is pressed after the prompt to:
-    printf ("Ask for a token (Press <ENTER>): ");
-    while (fgets (temp_buf, 2, stdin)) {
-
+    
+    //printf ("Ask for a token (Press <ENTER>): ");
+    while (up) {
+        sprintf(inbuffer, "%.2f", client_temp); // stores my_temp into in_buffer
         // Send message to server
 		//  Data sent is the client's message queue name
-        if (mq_send (qd_server, client_queue_name , strlen(client_queue_name), 0) == -1) {
+        if (mq_send (qd_server, inbuffer , strlen(inbuffer), 0) == -1) {
              cerr<<"Client: Not able to send message to server";
             continue;
         }
-
         // Receive response from server
 		// Message received is the token
         if (mq_receive (qd_client, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
              cerr<<"Client: mq_receive";
             exit (1);
         }
-        // display token received from server
-        cout << "Client: Token received from server: " <<  in_buffer << endl;
 
-        cout << endl << "Ask for a token (Press ): "<< endl;
+        // display token received from server
+        //cout << "Client: Token received from server: " <<  in_buffer << endl;
+        //cout << endl << "Ask for a token (Press ): "<< endl;
+        
+        if (strcmp(in_buffer, "quit") == 0){ // clients will stop when the temp stabilizes then exits loop. 
+            up = false; 
+            break;
+        }
+        // calculate new cent temp after server calculates new temp 
+        float central_temp = atof(inbuffer); 
+        client_temp = (client_temp * 3 + 3 * central_temp) / 5;
+        printf("client %d updated temperature: %.2f\n", getpid(), client_temp); 
     }
 
-   
+    
 	// Close this message queue
     if (mq_close (qd_client) == -1) {
         cerr<<"Client: mq_close";
