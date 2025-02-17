@@ -70,10 +70,7 @@ int main (int argc, char** argv) // to include cmd line arguments
          cerr<<"Client: mq_open (server)";
         exit (1);
     }
-
-// Loop while the enter key is pressed after the prompt to:
     
-    //printf ("Ask for a token (Press <ENTER>): ");
     while (up) {
         sprintf(in_buffer, "%s %.2f", client_queue_name, client_temp); // stores my_temp into in_buffer
         // Send message to server
@@ -83,7 +80,6 @@ int main (int argc, char** argv) // to include cmd line arguments
             continue;
         }
         // Receive response from server
-		// Message received is the token
         if (mq_receive (qd_client, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
              cerr<<"Client: mq_receive";
             exit (1);

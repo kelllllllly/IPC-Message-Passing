@@ -83,16 +83,16 @@ int main ()
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
             // stabalization check
-            cout << "attempting to stabilize";
-            stabilize = (client_temps[0] == new_cen_temp); 
-            cout << "succesful";
+            cout << "attempting to stabilize\n";
+            stabilize = (fabs(client_temps[0] - new_cen_temp) < 0.01);  // testing a different way to stabalize 
+            cout << "succesful\n";
             // send the new central temp back to client 
             //sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
             // open mq then checks if mq_open was successful 
-            cout << "attempting to open mq";
+            cout << "attempting to open mq\n";
             qd_client = mq_open(client_queue_name, O_WRONLY);
             if (qd_client == -1) {
-                cerr << "Server: mq_open (client queue) ";
+                cerr << "Server: mq_open (client queue)\n";
                 exit(1);
             }
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
@@ -103,7 +103,7 @@ int main ()
             central_temp = new_cen_temp;   // updates central temperature with the new one
     } 
 	
-    printf("The System is now stablizied. Quitting.");
+    printf("The System is now stablizied. Quitting.\n");
 
     // client terminates
     //sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
@@ -118,6 +118,6 @@ int main ()
     // close server, unlink 
     mq_close(qd_server);
     mq_unlink(SERVER_QUEUE_NAME);
-    printf("Exiting.");
+    printf("Exiting.\n");
     exit (0);
 }
