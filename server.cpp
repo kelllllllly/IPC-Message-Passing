@@ -52,7 +52,7 @@ int main ()
         exit (1);
     }
 
-    cout << "mq opened" << endl; // testing to see if it opens. 
+    cout << "Server: Message Queue Opened!" << endl; // testing to see if it opens. 
     
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
@@ -76,7 +76,7 @@ int main ()
             client_temps[0] = atof(in_buffer);
             total_client_temps += client_temps[0];
             printf("Temperature recieved from client: %.2f\n", client_temps[0]);
-         }
+         
             // calculates the new central temperature then prints. 
             float new_cen_temp = (2 * central_temp + total_client_temps) / 3.0;
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
@@ -91,7 +91,7 @@ int main ()
             if (qd_client == -1) {
                 cerr << "Server: mq_open (client queue)";
                 exit(1);
-
+            }
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
             sprintf(in_buffer, "%.2f", new_cen_temp);
             mq_send(qd_client, in_buffer, strlen(in_buffer) + 1, 0);
