@@ -81,7 +81,11 @@ int main ()
 
             // stabalization check
             cout << "attempting to stabilize\n";
-            stabilize = (fabs(client_temp - central_temp) < 0.01);// changed from client_temps[0] to current var.
+            if (stabilize) {
+                printf("System stabilized.");
+                mq_send(qd_client, "quit", strlen("quit") + 1, 0);
+                break;
+            }
             cout << "successful\n";
             // send the new central temp back to client 
             
