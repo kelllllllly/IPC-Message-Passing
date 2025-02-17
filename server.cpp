@@ -56,10 +56,6 @@ int main ()
 
     cout << "Server: Message Queue Opened!" << endl; // testing to see if it opens. 
     // moved openeing cllient queue outside of my loop
-   if(qd_client = mq_open(in_buffer, O_WRONLY) == -1){
-        cerr << "Server: mq_open (client queue) failed \n";
-        exit(1); // might have to fix to continue
-    }
     cout << "Server: Client MQ opened!" << endl;
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
@@ -68,7 +64,11 @@ int main ()
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
 
-
+    if(qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY) == -1){
+        cerr << "Server: mq_open (client queue) failed \n";
+        exit(1); // might have to fix to continue
+    }
+    cout << "Server: Client MQ opened!" << endl;
     while(!stabilize){
          // get temps from single client 
             if (mq_receive (qd_server, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
