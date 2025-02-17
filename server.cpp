@@ -111,8 +111,8 @@ int main ()
     }
 
     // close server, unlink 
-    mq_close(qd_server);
-    mq_unlink(SERVER_QUEUE_NAME);
+   // mq_close(qd_server);
+   // mq_unlink(SERVER_QUEUE_NAME);
     printf("Exiting.\n");
     exit (0);
 }
