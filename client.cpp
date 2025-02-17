@@ -24,7 +24,7 @@
 #define MAX_MESSAGES 10
 #define MAX_MSG_SIZE 256
 #define MSG_BUFFER_SIZE MAX_MSG_SIZE + 10   // leave some extra space after message
-
+#define CLIENT_QUEUE_NAME "/kellyclient"
 using namespace std;
 // resources used:
 // https://www.w3schools.com/c/c_strings.php - for string functions 
@@ -92,11 +92,12 @@ int main (int argc, char** argv) // to include cmd line arguments
         // calculate new cent temp after server calculates new temp 
         float central_temp = atof(in_buffer); 
         client_temp = (client_temp * 3 + 3 * central_temp) / 5;
-        printf("client %d updated temperature: %.2f\n", getpid(), client_temp); 
+        // printf("client %d updated temperature: %.2f\n", getpid(), client_temp); removing getpid for testing
+        printf("client %d updated temperature: %.2f\n", client_temp); 
     }
 
     // close mq, unlink 
-    mq_close(qd_server);
+    mq_close(qd_client);
     mq_unlink(client_queue_name);
     printf("Exiting.");
     exit (0);
