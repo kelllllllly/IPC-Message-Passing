@@ -107,7 +107,7 @@ int main ()
 
     // client terminates
     //sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
-    sprintf(client_queue_name, "/kellyclient-%d", 0);
+    sprintf(client_queue_name, "/kellyclient-%d", getpid());
     qd_client = mq_open(client_queue_name, O_WRONLY);
     // open mq, if fails quit!
     if (qd_client != -1) {
