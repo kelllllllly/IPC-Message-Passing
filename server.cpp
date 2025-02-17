@@ -79,7 +79,7 @@ int main ()
             // send the new central temp back to client 
             sprintf(client_queue_name, "%s0", CLIENT_QUEUE_NAMES);
             // open mq then checks if mq_open was successful 
-            mqd_t qd_client = mq_open(client_queue_name, O_WRONLY);
+            qd_client = mq_open(client_queue_name, O_WRONLY);
             if (qd_client == -1) {
                 cerr << "Server: mq_open (client queue)";
                 exit(1);
