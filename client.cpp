@@ -87,7 +87,8 @@ int main (int argc, char** argv) // to include cmd line arguments
             exit (1);
         }
         
-        if (strcmp(in_buffer, "quit") == 0){ // clients will stop when the temp stabilizes then exits loop. 
+        if (strcmp(in_buffer, "quit", 4) == 0){ // clients will stop when the temp stabilizes then exits loop. 
+            cout << "exiting." << endl;
             up = false; 
             break;
         }
