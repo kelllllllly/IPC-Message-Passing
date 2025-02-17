@@ -37,7 +37,8 @@ that name to reply.
 int main ()
 {
     mqd_t qd_server, qd_client;   // queue descriptors
-    
+    char client_queue_name[64];
+
 	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
 
@@ -66,7 +67,6 @@ int main ()
     // float total_client_temps = 0.0;  // initalized to 0
     float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
-    char client_queue_name[64];
 
 
     while(!stabilize){
