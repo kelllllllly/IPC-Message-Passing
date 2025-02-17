@@ -56,7 +56,6 @@ int main ()
 
     cout << "Server: Message Queue Opened!" << endl; // testing to see if it opens. 
     // moved openeing cllient queue outside of my loop
-    cout << "Server: Client MQ opened!" << endl;
 	// Declare (create) the buffers to hold message received and sent
     char in_buffer [MSG_BUFFER_SIZE];
 	float client_temp; // array that holds the client temps (currently a single client) currently changed from array to only hold 1 value
@@ -87,11 +86,11 @@ int main ()
             
             // open mq then checks if mq_open was successful 
 //            cout << "attempting to open mq\n";
-if(qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY) == -1){
-    cerr << "Server: mq_open (client queue) failed \n";
-    exit(1); // might have to fix to continue
+            if(qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY) == -1){
+            cerr << "Server: mq_open (client queue) failed \n";
+            exit(1); // might have to fix to continue
 }
-cout << "Server: Client MQ opened!" << endl;
+            cout << "Server: Client MQ opened!" << endl;
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
             sprintf(in_buffer, "%.2f", new_cen_temp);
             mq_send(qd_client, in_buffer, strlen(in_buffer) + 1, 0);
