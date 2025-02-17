@@ -98,15 +98,8 @@ int main (int argc, char** argv) // to include cmd line arguments
     }
 
     // close mq, unlink 
-    if (mq_close (qd_client) == -1) {
-        perror ("Client: mq_close");
-        exit (1);
-    }
-
-    if (mq_unlink (client_queue_name) == -1) {
-        perror ("Client: mq_unlink");
-        exit (1);
-    }
+    mq_close(qd_client);
+    mq_unlink(client_queue_name);
     printf("Exiting.");
     exit (0);
 }

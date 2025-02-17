@@ -79,6 +79,8 @@ int main ()
             float new_cen_temp = (2 * central_temp + client_temp) / 3.0; // changed from total to client temp
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
+            snprintf(message, sizeof(message), "Central Temperature is : %d", central_temp);
+            cout << "sending: " << message << endl;
             // stabalization check
             cout << "attempting to stabilize\n";
             stabilize = (client_temp == central_temp); // changed from client_temps[0] to current var.
@@ -87,7 +89,7 @@ int main ()
             
             // open mq then checks if mq_open was successful 
             cout << "attempting to open mq\n";
-            qd_client = mq_open(in_buffer, O_WRONLY);
+            qd_client = mq_open(client_queue_name, O_WRONLY);
             if (qd_client == -1) {
                 cerr << "Server: mq_open (client queue) failed \n";
                 exit(1); // might have to fix to continue
