@@ -56,7 +56,7 @@ int main ()
 
     cout << "Server: Message Queue Opened!" << endl; // testing to see if it opens. 
     // moved openeing cllient queue outside of my loop
-   if(qd_client = mq_open(client_queue_name, O_WRONLY) == -1){
+   if(qd_client = mq_open(in_buffer, O_WRONLY) == -1){
         cerr << "Server: mq_open (client queue) failed \n";
         exit(1); // might have to fix to continue
     }
