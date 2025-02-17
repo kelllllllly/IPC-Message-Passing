@@ -94,7 +94,7 @@ int main ()
             qd_client = mq_open(CLIENT_QUEUE_NAME, O_WRONLY);
             if (qd_client == -1) {
                 cerr << "Server: mq_open (client queue)\n";
-                exit(1); // might have to fix to continue
+                continue; // might have to fix to continue
             }
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
             sprintf(in_buffer, "%.2f", new_cen_temp);
