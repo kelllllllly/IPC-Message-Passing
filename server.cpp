@@ -41,6 +41,7 @@ int main ()
     float client_temps[CLIENT_COUNT] = {0}; // array that will store recieved client temps 
     float central_temp = 0.0;
     float prev_temp[CLIENT_COUNT]={0};
+    string client_queue_name[CLIENT_COUNT]; 
 
 	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
@@ -69,6 +70,8 @@ int main ()
                 exit (1);
             }
 
+            // store client q names 
+            client_queue_name[i] = msg.client_queue_name;
             // store the client temps 
             client_temps[i] = msg.client_temp;
             sum_temps += msg.client_temp;
@@ -91,21 +94,21 @@ int main ()
            
             // send the new central temp back to clients
             for (int i = 0; i < CLIENT_COUNT; i++) {
-                string client_queue_name = "/kellyclient-" + to_string(i + 1);
-                strcpy(msg.client_queue_name, client_queue_name.c_str());
+                if ((qd_client[i] = mq_open(client_queue_name[i].c_str(), O_WRONLY)) == -1) {
+                    cerr << "server: mq_open failed for " << client_queue_name[i] << "\n";
+                    continue;
+                }
+                cout << "server: client message queue opened!" << endl;
+
              // format new_central_temp to string, then stores it in inbuffer, then send it to client mq  
                 if(stabilize){
                     msg.client_temp = -1;
                 } else{
                     msg.client_temp = new_cen_temp;
                 }
-                // open mq then checks if mq_open was successful
-                if((qd_client[i] = mq_open(client_queue_name.c_str(), O_WRONLY))== -1){
-                    cerr << "Server: mq_open" << client_queue_name << "failed \n";
-                    continue; 
-                }
-                cout << "Server: Client MQ opened!" << endl;
+
                 mq_send(qd_client[i], reinterpret_cast<char*>(&msg), sizeof(msg), 0);
+                cout << "server: sent temperature " << msg.client_temp << " to " << client_queue_name[i] << endl;
                 mq_close(qd_client[i]); //close mq
             }
 

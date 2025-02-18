@@ -49,7 +49,7 @@ int main (int argc, char** argv) // to include cmd line arguments
     send_to_server msg; // will be used to store messages btwn client and server
 
     // creates queue name using client id and is passed as rgument
-    string str_client_queue_name = "/kellyclient-" + to_string(atoi(argv[2]));
+    string str_client_queue_name = "/kellyclient-" + to_string(getpid());
 	strcpy(msg.client_queue_name, str_client_queue_name.c_str());
     
     // client temp 
