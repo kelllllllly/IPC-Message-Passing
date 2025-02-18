@@ -111,14 +111,6 @@ int main ()
 	
     printf("The System is now stablizied. Quitting.\n");
 
-    // client terminates
-    qd_client = mq_open(client_queue_name, O_WRONLY);
-    // open mq, if fails quit!
-    if (qd_client != -1) {
-        mq_send(qd_client, "quit", 10, 0);
-        mq_close(qd_client);
-    }
-
     // close server, unlink 
     mq_close(qd_server);
     mq_unlink(SERVER_QUEUE_NAME);
