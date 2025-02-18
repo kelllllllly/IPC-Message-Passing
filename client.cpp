@@ -30,27 +30,30 @@ using namespace std;
 // https://www.w3schools.com/c/c_strings.php - for string functions 
 // https://www.w3schools.com/c/ref_stdio_sprintf.php 
 // https://en.cppreference.com/w/cpp/language/reinterpret_cast 
-/****************************************************************************
-START OF MAIN PROCEDURE
-This server creates a message queue and waits for a message requesting a token
-The message received also has the name of the client mailbox.  The server uses
-that name to reply.
-*****************************************************************************/
+// https://www.softprayog.in/programming/interprocess-communication-using-posix-message-queues-in-linux
+// https://man7.org/linux/man-pages/man7/mq_overview.7.html  
+// https://w3.cs.jmu.edu/kirkpams/OpenCSF/Books/csf/html/MQueues.html ** helped understandning with struct passing!
+
 struct send_to_server{
     char client_queue_name[64];
     float client_temp; 
-    
 };
+
 int main (int argc, char** argv) // to include cmd line arguments 
 {
+    if (argc < 3 ){ // makes sure that the user provides the correct amount of command line arguments
+        cerr << "usage: ./client (intial temp) (client id: (1-4))\n";
+        exit(1);
+    }
     mqd_t qd_server, qd_client;   // queue descriptors
-    send_to_server msg; 
+    send_to_server msg; // will be used to store messages btwn client and server
 
-    string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
+    // creates queue name using client id and is passed as rgument
+    string str_client_queue_name = "/kellyclient-" + to_string(atoi(argv[2]));
 	strcpy(msg.client_queue_name, str_client_queue_name.c_str());
     
+    // client temp 
     msg.client_temp = atof(argv[1]); // turns string to float 
-    
     float prev_client_temperature = msg.client_temp; // will store the intial client temp
 
     // Build message queue attribute structure passed to the mq open
@@ -60,7 +63,6 @@ int main (int argc, char** argv) // to include cmd line arguments
 		attr.mq_msgsize = sizeof(send_to_server);
 		attr.mq_curmsgs = 0;
 
-	//char in_buffer [MSG_BUFFER_SIZE];   // Build input buffer
 	bool up = true; 
 
 	// Create and open client message queue
