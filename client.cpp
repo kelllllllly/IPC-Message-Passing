@@ -41,7 +41,7 @@ struct send_to_server{
 
 int main (int argc, char** argv) // to include cmd line arguments 
 {
-    if (argc < 3 ){ // makes sure that the user provides the correct amount of command line arguments
+    if (argc < 2 ){ // makes sure that the user provides the correct amount of command line arguments
         cerr << "usage: ./client (intial temp) (client id: (1-4))\n";
         exit(1);
     }
