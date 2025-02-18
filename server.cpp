@@ -40,7 +40,7 @@ int main ()
 
     float client_temps[CLIENT_COUNT] = {0}; // array that will store recieved client temps 
     float central_temp = 0.0;
-    float prev_temp = 0.0;
+    float prev_temp[CLIENT_COUNT]={0};
 
 	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
