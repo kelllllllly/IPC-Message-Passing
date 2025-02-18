@@ -38,7 +38,7 @@ that name to reply.
 
 struct send_to_server{
     char client_queue_name[64];
-    float temperature; 
+    float client_temp; 
 };
 int main ()
 {
@@ -46,6 +46,9 @@ int main ()
     
     char client_queue_name[64];
     send_to_server msg; 
+    float prev_temp = 0.0;
+    float central_temp = 0.0;
+
 
 	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
@@ -61,55 +64,50 @@ int main ()
         perror ("Server: mq_open (server)");
         exit (1);
     }
+    cout << "Server: message queue opened!" << endl; 
 
-    cout << "Server: Message Queue Opened!" << endl; // testing to see if it opens. 
-    // moved openeing cllient queue outside of my loop
-	// Declare (create) the buffers to hold message received and sent
-    //char in_buffer [MSG_BUFFER_SIZE];
-	float client_temp; // array that holds the client temps (currently a single client) currently changed from array to only hold 1 value
-    // float total_client_temps = 0.0;  // initalized to 0
-    float central_temp = 0.0;  // initalized to 0 
     bool stabilize = false; // bool for evaluating if the server is stabalized 
 
     while(!stabilize){
          // get temps from single client 
-            if (mq_receive (qd_server, in_buffer, MSG_BUFFER_SIZE, NULL) == -1) {
+            if (mq_receive (qd_server, reinterpret_cast<char*>(&msg), sizeof(msg), NULL) == -1) {
                 cerr << "Server: mq_receive";
                 exit (1);
             }
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
-            // get client queue name
-            sscanf(in_buffer,"%s %f", client_queue_name, &client_temp);
-            printf("Temperature recieved from client: %.2f\n", client_temp);// taking out current array form to test single value 
-            printf("Client queue name: %s\n",client_queue_name);
+            printf("Temperature recieved from client %s: %.2f\n", msg.client_queue_name, msg.client_temp); // taking out current array form to test single value 
+
             // calculates the new central temperature then prints. 
             float new_cen_temp = (2 * central_temp + client_temp) / 3.0; // changed from total to client temp
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
             // stabalization check
             cout << "attempting to stabilize\n";
-            if (stabilize) {
-                printf("System stabilized.");
-                mq_send(qd_client, "quit", strlen("quit") + 1, 0);
-                break;
+            if (fabs(prev_temperature - new_central_temp) < 0.01){
+            stabilize = true;
             }
             cout << "successful\n";
             // send the new central temp back to client 
             
             // open mq then checks if mq_open was successful 
             cout << "attempting to open mq\n";
-            if((qd_client = mq_open(client_queue_name, O_WRONLY))== -1){
+            if((qd_client = mq_open(msg.client_queue_name, O_WRONLY))== -1){
                 perror("Server: mq_open failed");
-                cerr << "Server: mq_open" << client_queue_name << "failed \n";
-            continue; // might have to fix to continue
+                cerr << "Server: mq_open" << msg.client_queue_name << "failed \n";
+                continue; // might have to fix to continue
             }
             cout << "Server: Client MQ opened!" << endl;
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
-            sprintf(in_buffer, "%.2f", new_cen_temp);
-            mq_send(qd_client, in_buffer, strlen(in_buffer) + 1, 0);
+            if(stabilize){
+                msg.client_temp = -1;
+            } else{
+                msg.client_temp = new_cen_temp;
+            }
+            mq_send(qd_client, reinterpret_cast<char*>(&msg), sizeof(msg), 0);
             mq_close(qd_client); //close mq
     
             central_temp = new_cen_temp;   // updates central temperature with the new one
+            prev_temp = new_cen_temp; // prev temp is updarted with new one
     } 
 	
     printf("The System is now stablizied. Quitting.\n");
