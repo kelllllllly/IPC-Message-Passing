@@ -83,7 +83,7 @@ int main ()
 
             // stabalization check
             cout << "attempting to stabilize\n";
-            if (fabs(prev_temperature - new_cen_temp) < 0.01){
+            if (fabs(prev_temp - new_cen_temp) < 0.01){
             stabilize = true;
             }
             cout << "successful\n";
