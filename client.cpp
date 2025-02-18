@@ -49,7 +49,7 @@ int main (int argc, char** argv) // to include cmd line arguments
     string str_client_queue_name = "/kellyclient-" + to_string(getpid ());
 	strcpy(msg.client_queue_name, str_client_queue_name.c_str());
     
-    send_to_server.client_temp = atof(argv[1]); // turns string to float 
+    msg.client_temp = atof(argv[1]); // turns string to float 
     
     // Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
