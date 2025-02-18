@@ -34,6 +34,7 @@ using namespace std;
 // https://man7.org/linux/man-pages/man7/mq_overview.7.html
 // https://w3.cs.jmu.edu/kirkpams/OpenCSF/Books/csf/html/MQueues.html ** helped understandning with struct passing!
 
+// holds values for client queue name and temperature 
 struct send_to_server
 {
     char client_queue_name[64];
@@ -109,7 +110,7 @@ int main(int argc, char **argv) // to include cmd line arguments
         }
         // calculate new cent temp after server calculates new temp
         float central_temp = msg.client_temp; // stores temp from server
-        msg.client_temp = (prev_client_temperature * 3 + 2 * central_temp) / 5;
+        msg.client_temp = (prev_client_temperature * 3 + 2 * central_temp) / 5; // given formula 
         prev_client_temperature = msg.client_temp;
         printf("client %s updated temperature: %.2f\n", msg.client_queue_name, msg.client_temp);
     }

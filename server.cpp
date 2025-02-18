@@ -98,13 +98,12 @@ int main()
         // send the new central temp back to clients
         for (int i = 0; i < CLIENT_COUNT; i++)
         {
-            string client_queue_name = "/kellyclient-" + to_string(i + 1);
-            strcpy(msg.client_queue_name, client_queue_name.c_str());
-            // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
+            string client_queue_name = "/kellyclient-" + to_string(i + 1); // make client queue name 
+            strcpy(msg.client_queue_name, client_queue_name.c_str()); // copy it 
+            // determines if server wiill send signal to quit or new temp 
             if (stabilize)
             {
-                msg.client_temp = -1;
-            }
+                msg.client_temp = -1; 
             else
             {
                 msg.client_temp = new_cen_temp;
@@ -115,9 +114,7 @@ int main()
                 cerr << "server: mq_open failed for " << client_queue_name << "\n";
                 continue;
             }
-            //cout << "server: client message queue opened!" << endl;
-
-            mq_send(qd_client[i], reinterpret_cast<char *>(&msg), sizeof(msg), 0);
+            mq_send(qd_client[i], reinterpret_cast<char *>(&msg), sizeof(msg), 0); // sends back to each client 
             mq_close(qd_client[i]); // close mq
         }
 
