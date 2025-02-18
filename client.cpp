@@ -41,7 +41,7 @@ struct send_to_server{
 
 int main (int argc, char** argv) // to include cmd line arguments 
 {
-    if (argc < 2 ){ // makes sure that the user provides the correct amount of command line arguments
+    if (argc < 3 ){ // makes sure that the user provides the correct amount of command line arguments
         cerr << "usage: ./client (intial temp) (client id: (1-4))\n";
         exit(1);
     }
@@ -49,7 +49,7 @@ int main (int argc, char** argv) // to include cmd line arguments
     send_to_server msg; // will be used to store messages btwn client and server
 
     // creates queue name using client id and is passed as rgument
-    string str_client_queue_name = "/kellyclient-" + to_string(getpid());
+    string str_client_queue_name = "/kellyclient-" + to_string(atoi(argv[2]));
 	strcpy(msg.client_queue_name, str_client_queue_name.c_str());
     
     // client temp 
@@ -95,7 +95,7 @@ int main (int argc, char** argv) // to include cmd line arguments
 
         // check if client needs to quit 
         if(msg.client_temp == -1){
-            cout << "client" << msg.client_queue_name << "quitting./n";
+            cout << "client" << msg.client_queue_name << "quitting.\n";
             up = false;
             break;
         }
