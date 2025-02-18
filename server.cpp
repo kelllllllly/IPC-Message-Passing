@@ -11,10 +11,9 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <mqueue.h>
-#include <cstring>
 #include <iostream>
 #include <unistd.h>
-#include <math.h>
+#include <cmath>
 
 // DEFINE THE SERVER NAME AN DEFAULT VALUES FOR THE MESSAGE QUEUE
 #define SERVER_QUEUE_NAME   "/kellyserver"
@@ -90,7 +89,6 @@ int main ()
             // open mq then checks if mq_open was successful 
             cout << "attempting to open mq\n";
             if((qd_client = mq_open(msg.client_queue_name, O_WRONLY))== -1){
-                perror("Server: mq_open failed");
                 cerr << "Server: mq_open" << msg.client_queue_name << "failed \n";
                 continue; // might have to fix to continue
             }
