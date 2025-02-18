@@ -34,9 +34,9 @@ that name to reply.
 // https://www.w3schools.com/c/ref_stdio_sprintf.php
 // https://www.w3schools.com/c/ref_stdio_sscanf.php 
 
-struct send_to_server{
+struct send_to_client{
     char client_queue_name[64];
-    float client_temp; 
+    float client_temperature; 
 };
 int main ()
 {
@@ -72,10 +72,10 @@ int main ()
                 exit (1);
             }
             // inputs the temp recieved from client into the buffer and stored in client_temps[0]; then prints out the temp from client
-            printf("Temperature recieved from client %s: %.2f\n", msg.client_queue_name, msg.client_temp); // taking out current array form to test single value 
+            printf("Temperature recieved from client %s: %.2f\n", msg.client_queue_name, msg.client_temperature); // taking out current array form to test single value 
 
             // calculates the new central temperature then prints. 
-            float new_cen_temp = (2 * central_temp + msg.client_temp) / 3.0; // changed from total to client temp
+            float new_cen_temp = (2 * central_temp + msg.client_temperature) / 3.0; // changed from total to client temp
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
             // stabalization check
@@ -95,9 +95,9 @@ int main ()
             cout << "Server: Client MQ opened!" << endl;
             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq
             if(stabilize){
-                msg.client_temp = -1;
+                msg.client_temperature = -1;
             } else{
-                msg.client_temp = new_cen_temp;
+                msg.client_temperature = new_cen_temp;
             }
             mq_send(qd_client, reinterpret_cast<char*>(&msg), sizeof(msg), 0);
             mq_close(qd_client); //close mq

@@ -51,6 +51,8 @@ int main (int argc, char** argv) // to include cmd line arguments
     
     msg.client_temp = atof(argv[1]); // turns string to float 
     
+    float prev_client_temperature = msg.client_temp; // will store the intial client temp
+
     // Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
 		attr.mq_flags = 0;
@@ -96,10 +98,11 @@ int main (int argc, char** argv) // to include cmd line arguments
             break;
         }
         // calculate new cent temp after server calculates new temp 
-        //float central_temp = atof(in_buffer); 
-        msg.client_temp = (msg.client_temp * 3 + 2 * msg.client_temp) / 5;
-        // printf("client %d updated temperature: %.2f\n", getpid(), client_temp); removing getpid for testing
+        float central_temp = msg.client_temp;  //stores temp from server
+        msg.client_temp = (prev_client_temperature  * 3 + 2 * central_temp) / 5;
+        prev_client_temperature = msg.client_temp;
         printf("client updated temperature: %.2f\n", msg.client_temp); 
+
     }
 
     // close mq, unlink 
