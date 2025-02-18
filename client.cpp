@@ -96,6 +96,7 @@ int main (int argc, char** argv) // to include cmd line arguments
         // check if client needs to quit 
         if(msg.client_temp == -1){
             cout << "client" << msg.client_queue_name << "quitting./n";
+            sleep(1);
             up = false;
             break;
         }
