@@ -2,7 +2,7 @@
  * Adapted from  Softpryaog 
   *    https://www.softprayog.in/programming/interprocess-communication-using-posix-message-queues-in-linux
   * by MA Doman 2018
- * client.c: Client program
+ * client.cpp: Client program
  *           to demonstrate interprocess communication
  *           with POSIX message queues
  */
@@ -79,23 +79,23 @@ int main (int argc, char** argv) // to include cmd line arguments
     }
     
     while (up) {
-        // sprintf(in_buffer, "%s %.2f", client_queue_name, client_temp); // stores my_temp into in_buffer
         // Send message to server
 		//  Data sent is the client's message queue name
         if (mq_send (qd_server, reinterpret_cast<char*>(&msg), sizeof(msg), 0) == -1) {
              cerr<<"Client: Not able to send message to server";
             continue;
         }
-        printf("client %d sent temp: %.2f\n", getpid(), msg.client_temp);
-        
-        // Receive response from server
+        printf("client %s sent temperature: %.2f\n", msg.client_queue_name, msg.client_temp);
+       
+        // Receive response from server with central temperature 
         if (mq_receive (qd_client, reinterpret_cast<char*>(&msg), sizeof(msg), NULL) == -1) {
              cerr<<"Client: mq_receive";
             exit (1);
         }
+
         // check if client needs to quit 
         if(msg.client_temp == -1){
-            cout << "client quitting./n";
+            cout << "client" << msg.client_queue_name << "quitting./n";
             up = false;
             break;
         }
@@ -103,13 +103,13 @@ int main (int argc, char** argv) // to include cmd line arguments
         float central_temp = msg.client_temp;  //stores temp from server
         msg.client_temp = (prev_client_temperature  * 3 + 2 * central_temp) / 5;
         prev_client_temperature = msg.client_temp;
-        printf("client updated temperature: %.2f\n", msg.client_temp); 
+        printf("client %s updated temperature: %.2f\n", msg.client_queue_name, msg.client_temperature); 
 
     }
 
     // close mq, unlink 
     mq_close(qd_client);
     mq_unlink(msg.client_queue_name);
-    printf("Exiting.");
+    printf("client %s exiting. \n");
     exit (0);
 }
