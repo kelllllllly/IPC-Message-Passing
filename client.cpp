@@ -110,6 +110,6 @@ int main (int argc, char** argv) // to include cmd line arguments
     // close mq, unlink 
     mq_close(qd_client);
     mq_unlink(msg.client_queue_name);
-    printf("client %s exiting. \n");
+    printf("client %s exiting. \n", msg.client_queue_name);
     exit (0);
 }
