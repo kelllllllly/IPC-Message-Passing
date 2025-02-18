@@ -21,9 +21,8 @@
 #define QUEUE_PERMISSIONS 0660  // like chmod values, user and owner can read and write to queue
 #define MAX_MESSAGES 10
 #define MAX_MSG_SIZE 256
-#define MSG_BUFFER_SIZE MAX_MSG_SIZE + 10   // leave some extra space after message
 #define CLIENT_COUNT 1 
-//#define CLIENT_QUEUE_NAME "/kelly_client"
+
 using namespace std;
 /****************************************************************************
 START OF MAIN PROCEDURE
