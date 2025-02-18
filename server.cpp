@@ -43,7 +43,6 @@ int main ()
 {
     mqd_t qd_server, qd_client;   // queue descriptors
     
-    char client_queue_name[64];
     send_to_server msg; 
     float prev_temp = 0.0;
     float central_temp = 0.0;
