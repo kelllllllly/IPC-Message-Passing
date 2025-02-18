@@ -103,7 +103,7 @@ int main (int argc, char** argv) // to include cmd line arguments
         float central_temp = msg.client_temp;  //stores temp from server
         msg.client_temp = (prev_client_temperature  * 3 + 2 * central_temp) / 5;
         prev_client_temperature = msg.client_temp;
-        printf("client %d updated temperature: %.2f\n", msg.client_queue_name, msg.client_temp); 
+        printf("client %s updated temperature: %.2f\n", msg.client_queue_name, msg.client_temp); 
 
     }
 
