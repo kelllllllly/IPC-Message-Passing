@@ -73,7 +73,7 @@ int main ()
             client_temps[i] = msg.client_temp;
             sum_temps += msg.client_temp;
 
-            printf("temperature recieved from client %s: %.2f\n", msg.client_queue_name, msg.client_temperature);
+            printf("temperature recieved from client %s: %.2f\n", msg.client_queue_name, msg.client_temp);
          }
 
             // calculates the new central temperature then prints. 
