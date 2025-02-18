@@ -115,7 +115,7 @@ int main()
                 cerr << "server: mq_open failed for " << client_queue_name << "\n";
                 continue;
             }
-            cout << "server: client message queue opened!" << endl;
+            //cout << "server: client message queue opened!" << endl;
 
             mq_send(qd_client[i], reinterpret_cast<char *>(&msg), sizeof(msg), 0);
             mq_close(qd_client[i]); // close mq
@@ -128,7 +128,7 @@ int main()
         }
     }
 
-    printf("system stablized");
+    printf("system stablized ");
 
     // close server, unlink
     mq_close(qd_server);
