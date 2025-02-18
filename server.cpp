@@ -35,17 +35,24 @@ that name to reply.
 // https://www.w3schools.com/c/c_strings.php - for string functions 
 // https://www.w3schools.com/c/ref_stdio_sprintf.php
 // https://www.w3schools.com/c/ref_stdio_sscanf.php 
+
+struct send_to_server{
+    char client_queue_name[64];
+    float temperature; 
+};
 int main ()
 {
     mqd_t qd_server, qd_client;   // queue descriptors
+    
     char client_queue_name[64];
+    send_to_server msg; 
 
 	// Build message queue attribute structure passed to the mq open
     struct mq_attr attr;
 
 		attr.mq_flags = 0;
 		attr.mq_maxmsg = MAX_MESSAGES;
-		attr.mq_msgsize = MAX_MSG_SIZE;
+		attr.mq_msgsize = sizeof(send_to_server);
 		attr.mq_curmsgs = 0;
 	
     
@@ -58,7 +65,7 @@ int main ()
     cout << "Server: Message Queue Opened!" << endl; // testing to see if it opens. 
     // moved openeing cllient queue outside of my loop
 	// Declare (create) the buffers to hold message received and sent
-    char in_buffer [MSG_BUFFER_SIZE];
+    //char in_buffer [MSG_BUFFER_SIZE];
 	float client_temp; // array that holds the client temps (currently a single client) currently changed from array to only hold 1 value
     // float total_client_temps = 0.0;  // initalized to 0
     float central_temp = 0.0;  // initalized to 0 
