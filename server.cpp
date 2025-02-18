@@ -83,8 +83,8 @@ int main ()
             // stabalization check
             stabilize = true; 
             for(int i = 0; i < CLIENT_COUNT; i++ ){
-                if (fabs(prev_temp - new_cen_temp) < 0.01){
-                    stabilize = true;
+                if (fabs(client_temps[i] - prev_temp[i]) < 0.01){
+                    stabilize = false;
                     break;
                 }
             }
