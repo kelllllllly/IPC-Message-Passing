@@ -95,9 +95,9 @@ int main ()
                 strcpy(msg.client_queue_name, client_queue_name.c_str());
  `              // format new_central_temp to string, then stores it in inbuffer, then send it to client mq  
                 if(stabilize){
-                    msg.client_temperature = -1;
+                    msg.client_temp = -1;
                 } else{
-                    msg.client_temperature = new_cen_temp;
+                    msg.client_temp = new_cen_temp;
                 }
                 // open mq then checks if mq_open was successful
                 if((qd_client[i] = mq_open(client_queue_name.c_str(), O_WRONLY))== -1){
