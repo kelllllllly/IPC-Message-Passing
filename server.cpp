@@ -91,7 +91,10 @@ int main ()
                     break;
                 }
             }
-           
+           // queue names are set before loop
+            for (int i = 0; i < CLIENT_COUNT; i++) {
+            client_queue_name[i] = "/kellyclient-" + to_string(i + 1);
+        }
             // send the new central temp back to clients
             for (int i = 0; i < CLIENT_COUNT; i++) {
                 if ((qd_client[i] = mq_open(client_queue_name[i].c_str(), O_WRONLY)) == -1) {
@@ -100,6 +103,8 @@ int main ()
                 }
                 cout << "server: client message queue opened!" << endl;
 
+                strcpy(msg.client_queue_name, client_queue_name[i].c_str());
+
              // format new_central_temp to string, then stores it in inbuffer, then send it to client mq  
                 if(stabilize){
                     msg.client_temp = -1;
@@ -107,7 +112,11 @@ int main ()
                     msg.client_temp = new_cen_temp;
                 }
 
-                mq_send(qd_client[i], reinterpret_cast<char*>(&msg), sizeof(msg), 0);
+               if (mq_send(qd_client[i], reinterpret_cast<char*>(&msg), sizeof(msg), 0) == -1) {
+        cerr << "Server: mq_send failed for " << client_queue_name[i] << "\n";
+    } else {
+        cout << "Server: Sent temperature " << msg.client_temp << " to " << client_queue_name[i] << endl;
+    }
                 cout << "server: sent temperature " << msg.client_temp << " to " << client_queue_name[i] << endl;
                 mq_close(qd_client[i]); //close mq
             }
