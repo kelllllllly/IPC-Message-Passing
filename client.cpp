@@ -113,10 +113,12 @@ int main(int argc, char **argv) // to include cmd line arguments
         prev_client_temperature = msg.client_temp;
         printf("client %s updated temperature: %.2f\n", msg.client_queue_name, msg.client_temp);
     }
-
+    
+    // print the final temp for each client
+    printf("client %s final temperature: %.2f\n",msg.client_queue_name, msg.client_temp);
+    
     // close mq, unlink
     mq_close(qd_client);
     mq_unlink(msg.client_queue_name);
-    printf("client %s exiting. \n", msg.client_queue_name);
     exit(0);
 }
