@@ -93,7 +93,7 @@ int main ()
             for (int i = 0; i < CLIENT_COUNT; i++) {
                 string client_queue_name = "/kellyclient-" + to_string(i + 1);
                 strcpy(msg.client_queue_name, client_queue_name.c_str());
- `              // format new_central_temp to string, then stores it in inbuffer, then send it to client mq  
+             // format new_central_temp to string, then stores it in inbuffer, then send it to client mq  
                 if(stabilize){
                     msg.client_temp = -1;
                 } else{
