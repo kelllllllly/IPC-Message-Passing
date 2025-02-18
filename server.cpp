@@ -78,12 +78,12 @@ int main ()
             printf("Temperature recieved from client %s: %.2f\n", msg.client_queue_name, msg.client_temp); // taking out current array form to test single value 
 
             // calculates the new central temperature then prints. 
-            float new_cen_temp = (2 * central_temp + client_temp) / 3.0; // changed from total to client temp
+            float new_cen_temp = (2 * central_temp + msg.client_temp) / 3.0; // changed from total to client temp
             printf("New Central Temperature: %.2f\n", new_cen_temp); 
 
             // stabalization check
             cout << "attempting to stabilize\n";
-            if (fabs(prev_temperature - new_central_temp) < 0.01){
+            if (fabs(prev_temperature - new_cen_temp) < 0.01){
             stabilize = true;
             }
             cout << "successful\n";
